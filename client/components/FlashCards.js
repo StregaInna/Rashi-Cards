@@ -60,8 +60,8 @@ class FlashCard extends React.Component {
         if (this.state.cardIndex < this.state.dataArray.length){
             this.setState({
                 currentCard: this.state.dataArray[this.state.cardIndex],
-                inputValue:''
             })
+            //clear the array
         }
       }
       //
