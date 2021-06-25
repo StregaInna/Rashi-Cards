@@ -19,3 +19,13 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+.App {
+  text-align: center;
+}
+#flashcard-div{
+  display: flex;
+  flex-direction: column;
+}
+#letter-image{
+  width: 200px;
+}
