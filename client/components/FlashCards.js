@@ -16,19 +16,19 @@ class FlashCard extends React.Component {
         console.dir(this.props.cardDeck)
         this.props.loadRashiScript()
         console.dir(this.props.cardDeck)
-
-        //this.props.shuffle()
+        this.props.shuffle()
     }
+
     handleChange(event) {
-        this.props.realKeyboard(event.target.value)
-      }
+      this.props.realKeyboard(event.target.value)
+    }
 
     handleSubmit(event) {
         event.preventDefault()
         if(this.props.inputString!==this.props.currentCard.leter){
             this.props.reAddCard()
         }
-        if(this.props.cardIndex < this.props.cardDeck.length -1){
+        if(this.props.cardIndex < (this.props.cardDeck.length -1)){
             this.props.nextCard()
         }
       }

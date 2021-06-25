@@ -58,10 +58,10 @@ export default function cardDeckReducer(cards = {cardDeck:[], currentCard:{}, ca
         return{cardDeck: deckShuffler(cards.cardDeck), currentCard: cards.cardDeck[0], cardIndex:0}
     }
     case NEXT_CARD: {
-        return{cardDeck, cardIndex: cards.cardIndex+1, currentCard: cards.cardDeck[cards.cardIndex]}
+        return{cardDeck, cardIndex: cardIndex+1, currentCard: cardDeck[cardIndex]}
     }
     case RE_ADD_CARD: {
-        return{cardDeck: [...cards.cardDeck, cards.currentCard], currentCard, cardIndex}
+        return{cardDeck: [...cardDeck, currentCard], currentCard, cardIndex}
     }
     default:
       return cards
