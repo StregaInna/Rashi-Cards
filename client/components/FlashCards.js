@@ -1,14 +1,16 @@
 import React from 'react'
 import dataArray from '../store/data'
+import { connect } from 'react-redux';
+import { realKeyboard } from '../store/inputString'
 
 function shuffleArray(array) {
     let currentId = array.length;
     while (0 !== currentId) {
-      let randId = Math.floor(Math.random() * currentId)
-      currentId -= 1
-      let element = array[currentId]
-      array[currentId] = array[randId]
-      array[randId] = element
+        let randId = Math.floor(Math.random() * currentId)
+        currentId -= 1
+        let element = array[currentId]
+        array[currentId] = array[randId]
+        array[randId] = element
     }
     return array
   }
@@ -16,7 +18,6 @@ function shuffleArray(array) {
 const initialState = {
     dataArray: shuffleArray([...dataArray]),
     cardIndex: 0,
-    inputValue: '',
     currentCard: dataArray[0],
     correctAnswer: null,
     score: 0
@@ -25,19 +26,21 @@ const initialState = {
 class FlashCard extends React.Component {
     constructor(props){
         super(props)
-        this.state = {...initialState}
+        this.state = {
+            ...initialState
+        }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
     }
     handleChange(event) {
-        this.setState({inputValue: event.target.value})
+        this.props.realKeyboard(event.target.value)
       }
       //
       //this is the heart of the program
-      //
+     //
     handleSubmit(event) {
         event.preventDefault()
-        if(this.state.inputValue!==this.state.currentCard.letter){
+        if(this.props.inputString!==this.state.currentCard.letter){
             this.setState({
                 dataArray: [...this.state.dataArray, this.state.currentCard],
                 correctAnswer: false
@@ -67,7 +70,7 @@ class FlashCard extends React.Component {
     render(){
         // console.dir(this.state.currentCard)
         // console.dir(this.state.dataArray)
-
+        console.log(this.props.inputString)
         return <div>
             {this.state.cardIndex < this.state.dataArray.length?(
             <div id="flashcard-div">
@@ -78,7 +81,7 @@ class FlashCard extends React.Component {
                     <form onSubmit={this.handleSubmit}>
                         <label>
                             Letter:
-                            <input type="text" value={this.state.inputValue} onChange={this.handleChange} />
+                            <input type="text" value={this.props.inputString} onChange={this.handleChange} />
                         </label>
                         <input type="submit" value="Submit" />
                     </form>
@@ -93,4 +96,12 @@ class FlashCard extends React.Component {
 
     }
 }
-export default FlashCard
+const mapState = (state) => {
+    return {
+        inputString: state.inputString
+    }
+}
+const mapDispatch = (dispatch) => ({
+    realKeyboard: (string) => dispatch(realKeyboard(string))
+})
+export default connect(mapState, mapDispatch)(FlashCard)
