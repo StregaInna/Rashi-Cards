@@ -1,96 +1,80 @@
 import React from 'react'
 import dataArray from '../store/data'
+import { connect } from 'react-redux';
+import { realKeyboard } from '../store/inputString'
+import { loadRashiScript, nextCard, reAddCard, shuffleDeck } from '../store/cardDeck';
 
-function shuffleArray(array) {
-    let currentId = array.length;
-    while (0 !== currentId) {
-      let randId = Math.floor(Math.random() * currentId)
-      currentId -= 1
-      let element = array[currentId]
-      array[currentId] = array[randId]
-      array[randId] = element
-    }
-    return array
-  }
 
-const initialState = {
-    dataArray: shuffleArray([...dataArray]),
-    cardIndex: 0,
-    inputValue: '',
-    currentCard: dataArray[0],
-    correctAnswer: null,
-    score: 0
-}
 
 class FlashCard extends React.Component {
     constructor(props){
         super(props)
-        this.state = {...initialState}
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
     }
+    componentDidMount(){
+        console.dir(this.props.cardDeck)
+        this.props.loadRashiScript()
+        console.dir(this.props.cardDeck)
+        this.props.shuffle()
+    }
+
     handleChange(event) {
-        this.setState({inputValue: event.target.value})
-      }
-      //
-      //this is the heart of the program
-      //
+      this.props.realKeyboard(event.target.value)
+    }
+
     handleSubmit(event) {
         event.preventDefault()
-        if(this.state.inputValue!==this.state.currentCard.letter){
-            this.setState({
-                dataArray: [...this.state.dataArray, this.state.currentCard],
-                correctAnswer: false
-            })
+        if(this.props.inputString!==this.props.currentCard.leter){
+            this.props.reAddCard()
         }
-        else{
-            this.setState({
-                correctAnswer:true,
-                score: this.state.score + 1
-            })
-        }
-        console.log(this.state.cardIndex)
-        this.setState({
-            cardIndex: (this.state.cardIndex + 1) 
-        })
-        console.log(this.state.cardIndex)
-        if (this.state.cardIndex < this.state.dataArray.length){
-            this.setState({
-                currentCard: this.state.dataArray[this.state.cardIndex],
-                inputValue:''
-            })
+        if(this.props.cardIndex < (this.props.cardDeck.length -1)){
+            this.props.nextCard()
         }
       }
-      //
-      //
 
     render(){
         // console.dir(this.state.currentCard)
         // console.dir(this.state.dataArray)
-
+        console.log(this.props.inputString)
         return <div>
-            {this.state.cardIndex < this.state.dataArray.length?(
+            {this.props.cardDeck?(
             <div id="flashcard-div">
                 <div id="image-div" >
-                    <img alt={`Rashi Script letter ${this.state.currentCard.leter}`} src={this.state.currentCard.imageUrl} id='letter-image' />
+                    <img alt={`Rashi Script letter ${this.props.currentCard.leter}`} src={this.props.currentCard.imageUrl} id='letter-image' />
                 </div>
                 <div id="form-div" >
                     <form onSubmit={this.handleSubmit}>
                         <label>
                             Letter:
-                            <input type="text" value={this.state.inputValue} onChange={this.handleChange} />
+                            <input type="text" value={this.props.inputString} onChange={this.handleChange} />
                         </label>
                         <input type="submit" value="Submit" />
                     </form>
                 </div>
                 <div>
-                <h1>Current score is {`${this.state.score}/${this.state.cardIndex}`}</h1>
+                <h1>Current score is currently undefined</h1>
                 </div>
-            </div>):(
-            <h1>{`Congratulations! your score is ${this.state.score}/${this.state.dataArray.length}`}</h1>
-            )}
+            </div>):(<h1>Loading...</h1>)
+            }
         </div>
 
     }
 }
-export default FlashCard
+const mapState = (state) => {
+    return {
+        inputString: state.inputString,
+        cardDeck: state.cards.cardDeck,
+        currentCard: state.cards.currentCard,
+        cardIndex: state.cards.cardIndex
+    }
+}
+const mapDispatch = (dispatch) => ({
+    realKeyboard: (string) => dispatch(realKeyboard(string)),
+    loadRashiScript: () => dispatch(loadRashiScript()),
+    shuffle: () => dispatch(shuffleDeck()),
+    nextCard: () => dispatch(nextCard()),
+    reAddCard: () => dispatch(reAddCard()),
+
+})
+export default connect(mapState, mapDispatch)(FlashCard)
