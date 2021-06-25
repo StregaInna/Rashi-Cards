@@ -4,10 +4,12 @@ import thunkMiddleware from 'redux-thunk'
 import {composeWithDevTools} from 'redux-devtools-extension'
 import auth from './auth'
 import inputStringReducer from './inputString'
+import cardDeckReducer from './cardDeck'
 
 const reducer = combineReducers({ 
   auth, 
-  inputSting: inputStringReducer 
+  inputSting: inputStringReducer,
+  cards: cardDeckReducer
 })
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))

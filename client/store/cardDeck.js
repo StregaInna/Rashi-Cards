@@ -42,21 +42,21 @@ export const loadRashiScript = () => {
 }
 
 // CARD-DECK SUB-REDUCER
-export default function inputStringReducer({cardDeck = [], currentCard = {}, cardIndex = 0}, action) {
+export default function cardDeckReducer(cards, action) {
   switch (action.type) {
     case LOAD_DECK: {
         return {cardDeck: action.deck, currentCard: action.deck[0], cardIndex:0}
     }
     case SHUFFLE_DECK: {
-        return{cardDeck: deckShuffler(cardDeck), currentCard: cardDeck[0], cardIndex:0}
+        return{cardDeck: deckShuffler(cards.cardDeck), currentCard: cards.cardDeck[0], cardIndex:0}
     }
     case NEXT_CARD: {
-        return{cardDeck, cardIndex: cardIndex+1, currentCard = cardDeck[cardIndex]}
+        return{cardDeck, cardIndex: cards.cardIndex+1, currentCard: cards.cardDeck[cards.cardIndex]}
     }
     case RE_ADD_CARD: {
-        return{cardDeck: [...cardDeck, currentCard], currentCard, cardIndex}
+        return{cardDeck: [...cards.cardDeck, cards.currentCard], currentCard, cardIndex}
     }
     default:
-      return {cardDeck, currentCard}
+      return cards
   }
 }
