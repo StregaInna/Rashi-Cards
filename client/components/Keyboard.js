@@ -1,4 +1,6 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import addLetter from '../store/inputString'
 
 const keboardArray = [
     ['ק','ר','א','ט','ו','ן','ם','פ'],
@@ -9,17 +11,17 @@ const keboardArray = [
 class HebrewKeyboard extends React.Component {
     constructor(props){
         super(props)
-        this.state = {
-            outPutString: '',
-            keboardArray: keboardArray
-        }
+        this.handleClick = this.handleClick.bind(this)
+    }
+    handleClick(event) {
+        this.props.addLetter(event.target.key)
     }
     render(){
         return(
             <div>
                 <h1></h1>
                 <div>{this.state.keboardArray[0].map((char)=>{
-                    return(<button key={char}>{char}</button>)
+                    return(<button key={char} onClick={this.handleClick}>{char}</button>)
                 })}</div>
                   <div>{this.state.keboardArray[1].map((char)=>{
                     return(<button key={char}>{char}</button>)
@@ -33,4 +35,8 @@ class HebrewKeyboard extends React.Component {
     }
 }
 
-export default HebrewKeyboard
+const mapDispatch = (dispatch) => ({
+    addLetter: (letter) => dispatch(addLetter(letter))
+})
+
+export default connect(null, mapDispatch)(HebrewKeyboard)
