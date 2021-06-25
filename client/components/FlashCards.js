@@ -13,7 +13,11 @@ class FlashCard extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this)
     }
     componentDidMount(){
+        console.dir(this.props.cardDeck)
         this.props.loadRashiScript()
+        console.dir(this.props.cardDeck)
+
+        //this.props.shuffle()
     }
     handleChange(event) {
         this.props.realKeyboard(event.target.value)
@@ -34,10 +38,10 @@ class FlashCard extends React.Component {
         // console.dir(this.state.dataArray)
         console.log(this.props.inputString)
         return <div>
-            {this.state.cardIndex < this.state.dataArray.length?(
+            {this.props.cardDeck?(
             <div id="flashcard-div">
                 <div id="image-div" >
-                    <img alt={`Rashi Script letter ${this.state.currentCard.leter}`} src={this.state.currentCard.imageUrl} id='letter-image' />
+                    <img alt={`Rashi Script letter ${this.props.currentCard.leter}`} src={this.props.currentCard.imageUrl} id='letter-image' />
                 </div>
                 <div id="form-div" >
                     <form onSubmit={this.handleSubmit}>
@@ -49,11 +53,10 @@ class FlashCard extends React.Component {
                     </form>
                 </div>
                 <div>
-                <h1>Current score is {`${this.state.score}/${this.state.cardIndex}`}</h1>
+                <h1>Current score is currently undefined</h1>
                 </div>
-            </div>):(
-            <h1>{`Congratulations! your score is ${this.state.score}/${this.state.dataArray.length}`}</h1>
-            )}
+            </div>):(<h1>Loading...</h1>)
+            }
         </div>
 
     }
