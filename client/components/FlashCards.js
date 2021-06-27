@@ -16,6 +16,7 @@ class FlashCard extends React.Component {
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.keyboardHandler = this.keyboardHandler.bind(this)
     }
     componentDidMount(){
         this.props.loadRashiScript()
@@ -24,6 +25,11 @@ class FlashCard extends React.Component {
     handleChange(event) {
         this.setState({
             inputString: event.target.value
+        })
+    }
+    keyboardHandler(event) {
+        this.setState({
+            inputString: this.state.inputString + event.target.value
         })
     }
 
@@ -43,7 +49,6 @@ class FlashCard extends React.Component {
       }
 
     render(){
-        console.log(this.state)
         return <div>
             {this.props.cardDeck?(
                 <div>{this.state.complete?(
@@ -64,7 +69,7 @@ class FlashCard extends React.Component {
                         <div>
                             <h1>Current score is {this.props.score.correct}/{this.props.score.total}</h1>
                         </div>
-                        <Keyboard clickHandler={(event)=>this.handleChange(event)}/> 
+                        <Keyboard clickHandler={(event)=>this.keyboardHandler(event)}/> 
                     </div>)}
                 </div>):(<h1>Loading...</h1>)
             } 
