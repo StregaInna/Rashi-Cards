@@ -12,10 +12,12 @@ class FlashCard extends React.Component {
         super(props)
         this.state = {
             inputString: '',
-            complete: false
+            complete: false,
+            showKeyboard: false
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.toggleKeyboard = this.toggleKeyboard.bind(this)
         this.keyboardHandler = this.keyboardHandler.bind(this)
     }
     componentDidMount(){
@@ -25,6 +27,11 @@ class FlashCard extends React.Component {
     handleChange(event) {
         this.setState({
             inputString: event.target.value
+        })
+    }
+    toggleKeyboard(event){
+        this.setState({
+            showKeyboard: !this.state.showKeyboard
         })
     }
     keyboardHandler(event) {
@@ -49,6 +56,7 @@ class FlashCard extends React.Component {
       }
 
     render(){
+        console.dir(this.state)
         return <div>
             {this.props.cardDeck?(
                 <div>{this.state.complete?(
@@ -69,7 +77,16 @@ class FlashCard extends React.Component {
                         <div>
                             <h1>Current score is {this.props.score.correct}/{this.props.score.total}</h1>
                         </div>
-                        <Keyboard clickHandler={(event)=>this.keyboardHandler(event)}/> 
+                        <div>
+                            {this.state.showKeyboard?(
+                                <div>
+                                    <Keyboard clickHandler={(event)=>this.keyboardHandler(event)}/>
+                                    <button onClick={this.toggleKeyboard}>Hide Keyboard</button>
+                                </div>
+                            ):(
+                                <button onClick={this.toggleKeyboard}>Show Keyboard</button>
+                            )}
+                        </div> 
                     </div>)}
                 </div>):(<h1>Loading...</h1>)
             } 
