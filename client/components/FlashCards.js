@@ -1,8 +1,8 @@
 import React from 'react'
-import dataArray from '../store/data'
 import { connect } from 'react-redux';
 import { clearString, realKeyboard } from '../store/inputString'
 import { loadRashiScript, nextCard, reAddCard, shuffleDeck } from '../store/cardDeck';
+import { correctAnswer, incorrectAnswer, resetScore } from '../store/score';
 
 
 
@@ -13,9 +13,7 @@ class FlashCard extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this)
     }
     componentDidMount(){
-        console.dir(this.props.cardDeck)
         this.props.loadRashiScript()
-        console.dir(this.props.cardDeck)
         this.props.shuffle()
     }
 
@@ -27,7 +25,8 @@ class FlashCard extends React.Component {
         event.preventDefault()
         if(this.props.inputString!==this.props.currentCard.leter){
             this.props.reAddCard()
-        }
+            this.props.incorrectAnswer()
+        }else{this.props.correctAnswer()}
         if(this.props.cardIndex < (this.props.cardDeck.length -1)){
             this.props.nextCard()
         }
@@ -35,8 +34,6 @@ class FlashCard extends React.Component {
       }
 
     render(){
-        // console.dir(this.state.currentCard)
-        // console.dir(this.state.dataArray)
         console.log(`ths input string is ${this.props.inputString}`)
         return <div>
             {this.props.cardDeck?(
@@ -54,7 +51,7 @@ class FlashCard extends React.Component {
                     </form>
                 </div>
                 <div>
-                <h1>Current score is currently undefined</h1>
+                <h1>Current score is {this.props.score.correct}/{this.props.score.total}</h1>
                 </div>
             </div>):(<h1>Loading...</h1>)
             }
@@ -67,7 +64,8 @@ const mapState = (state) => {
         inputString: state.inputString,
         cardDeck: state.cards.cardDeck,
         currentCard: state.cards.currentCard,
-        cardIndex: state.cards.cardIndex
+        cardIndex: state.cards.cardIndex,
+        score: state.score
     }
 }
 const mapDispatch = (dispatch) => ({
@@ -76,7 +74,10 @@ const mapDispatch = (dispatch) => ({
     shuffle: () => dispatch(shuffleDeck()),
     nextCard: () => dispatch(nextCard()),
     reAddCard: () => dispatch(reAddCard()),
-    clearString: () => dispatch(clearString())
+    clearString: () => dispatch(clearString()),
+    correctAnswer: () => dispatch(correctAnswer()),
+    incorrectAnswer: () => dispatch(incorrectAnswer()),
+    resetScore: () => dispatch(resetScore())
 
 })
 export default connect(mapState, mapDispatch)(FlashCard)

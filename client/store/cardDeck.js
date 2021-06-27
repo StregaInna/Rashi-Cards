@@ -11,8 +11,6 @@ const RE_ADD_CARD = 'RE_ADD_CARD'
 
 //ACTION CREATORS
 export const loadDeck = (deck) => {
-    console.log('action creator, deck:')
-    console.dir(deck)
     return {
         type: LOAD_DECK,
         deck
@@ -38,18 +36,14 @@ export const reAddCard = () => {
 //THUNK CREATORS (none yet)
 
 export const loadRashiScript = () => {
-    console.log('making a thunk...')
+    //this is here to be updated when the data is moved to the database
     return function (dispatch){
-        console.log('thunking... dataArray:')
-        console.dir(dataArray)
         dispatch(loadDeck(dataArray))
     }
 }
 
 // CARD-DECK SUB-REDUCER
 export default function cardDeckReducer(cards = {cardDeck:[], currentCard:{}, cardIndex:0}, action) {
-    console.log('reducer action is')
-    console.dir(action)
   switch (action.type) {
     case LOAD_DECK: {
         return {cardDeck: action.deck, currentCard: action.deck[0], cardIndex:0}
@@ -61,7 +55,7 @@ export default function cardDeckReducer(cards = {cardDeck:[], currentCard:{}, ca
         return{...cards, cardIndex: cards.cardIndex+1, currentCard: cards.cardDeck[cards.cardIndex+1]}
     }
     case RE_ADD_CARD: {
-        return{cardDeck: [...cardDeck, currentCard], currentCard, cardIndex}
+        return{...cards, cardDeck: [...cards.cardDeck, cards.currentCard]}
     }
     default:
       return cards
