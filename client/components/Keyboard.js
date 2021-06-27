@@ -14,29 +14,36 @@ class HebrewKeyboard extends React.Component {
         this.handleClick = this.handleClick.bind(this)
     }
     handleClick(event) {
-        this.props.virtualKeyboard(event.target.name)
+        this.props.clickHandler(event)
     }
     render(){
         return(
             <div>
                 <h1></h1>
                 <div>{keboardArray[0].map((char)=>{
-                    return(<button key={char} name={char} onClick={this.handleClick}>{char}</button>)
+                    return(<button key={char} value={char} onClick={this.handleClick}>{char}</button>)
                 })}</div>
                   <div>{keboardArray[1].map((char)=>{
-                    return(<button key={char} name={char} onClick={this.handleClick}>{char}</button>)
+                    return(<button key={char} value={char} onClick={this.handleClick}>{char}</button>)
                 })}</div>
                   <div>{keboardArray[2].map((char)=>{
-                    return(<button key={char} name={char} onClick={this.handleClick}>{char}</button>)
+                    return(<button key={char} value={char} onClick={this.handleClick}>{char}</button>)
                 })}</div>
             </div>
         )
 
     }
 }
+// const mapState = (state) => {
+//     return {
+//         inputString: state.inputString
+//     }
 
-const mapDispatch = (dispatch) => ({
-    virtualKeyboard: (letter) => dispatch(virtualKeyboard(letter))
-})
+// }
+// const mapDispatch = (dispatch) => {
+//     return{
+//         virtualKeyboard: (letter) => dispatch(virtualKeyboard(letter))
+//     }
+// }
 
-export default connect(null, mapDispatch)(HebrewKeyboard)
+export default HebrewKeyboard  

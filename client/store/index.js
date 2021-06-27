@@ -5,11 +5,13 @@ import {composeWithDevTools} from 'redux-devtools-extension'
 import auth from './auth'
 import inputStringReducer from './inputString'
 import cardDeckReducer from './cardDeck'
+import scoreReducer from './score'
 
 const reducer = combineReducers({ 
   auth, 
-  inputSting: inputStringReducer,
-  cards: cardDeckReducer
+  //inputSting: inputStringReducer,
+  cards: cardDeckReducer,
+  score: scoreReducer
 })
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
