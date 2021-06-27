@@ -28,14 +28,17 @@ class FlashCard extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault()
-        if(this.props.inputString!==this.props.currentCard.leter){
+        console.log(`the input string is ${this.state.inputString} and the correct answer is ${this.props.currentCard.letter}`)
+        if(this.state.inputString!==this.props.currentCard.letter){
             this.props.reAddCard()
             this.props.incorrectAnswer()
         }else{this.props.correctAnswer()}
         if(this.props.cardIndex < (this.props.cardDeck.length -1)){
             this.props.nextCard()
         }
-        this.props.clearString()
+        this.setState({
+            inputString: ''
+        })
       }
 
     render(){
@@ -44,7 +47,7 @@ class FlashCard extends React.Component {
             {this.props.cardDeck?(
             <div id="flashcard-div">
                 <div id="image-div" >
-                    <img alt={`Rashi Script letter ${this.props.currentCard.leter}`} src={this.props.currentCard.imageUrl} id='letter-image' />
+                    <img alt={`Rashi Script letter ${this.props.currentCard.letter}`} src={this.props.currentCard.imageUrl} id='letter-image' />
                 </div>
                 <div id="form-div" >
                     <form onSubmit={this.handleSubmit}>
@@ -76,7 +79,7 @@ const mapState = (state) => {
 }
 const mapDispatch = (dispatch) => {
     return{
-        realKeyboard: (string) => dispatch(realKeyboard(string)),
+        //realKeyboard: (string) => dispatch(realKeyboard(string)),
         loadRashiScript: () => dispatch(loadRashiScript()),
         shuffle: () => dispatch(shuffleDeck()),
         nextCard: () => dispatch(nextCard()),

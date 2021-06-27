@@ -9,7 +9,7 @@ import scoreReducer from './score'
 
 const reducer = combineReducers({ 
   auth, 
-  inputSting: inputStringReducer,
+  //inputSting: inputStringReducer,
   cards: cardDeckReducer,
   score: scoreReducer
 })
