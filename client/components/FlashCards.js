@@ -11,7 +11,8 @@ class FlashCard extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            inputString: ''
+            inputString: '',
+            complete: false
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -35,7 +36,7 @@ class FlashCard extends React.Component {
         }else{this.props.correctAnswer()}
         if(this.props.cardIndex < (this.props.cardDeck.length -1)){
             this.props.nextCard()
-        }
+        }else{this.setState({complete:true})}
         this.setState({
             inputString: ''
         })
@@ -45,25 +46,28 @@ class FlashCard extends React.Component {
         console.log(this.state)
         return <div>
             {this.props.cardDeck?(
-            <div id="flashcard-div">
-                <div id="image-div" >
-                    <img alt={`Rashi Script letter ${this.props.currentCard.letter}`} src={this.props.currentCard.imageUrl} id='letter-image' />
-                </div>
-                <div id="form-div" >
-                    <form onSubmit={this.handleSubmit}>
-                        <label>
-                            Letter:
-                            <input type="text" value={this.state.inputString} onChange={this.handleChange} />
-                        </label>
-                        <input type="submit" value="Submit" />
-                    </form>
-                </div>
-                <div>
-                <h1>Current score is {this.props.score.correct}/{this.props.score.total}</h1>
-                </div>
-            </div>):(<h1>Loading...</h1>)
-            }
-          <Keyboard clickHandler={(event)=>this.handleChange(event)}/>  
+                <div>{this.state.complete?(
+                    <h1>Great Work! your score is {this.props.score.correct}/{this.props.score.total}</h1>):(
+                    <div id="flashcard-div">
+                        <div id="image-div" >
+                            <img alt={`Rashi Script letter ${this.props.currentCard.letter}`} src={this.props.currentCard.imageUrl} id='letter-image' />
+                        </div>
+                        <div id="form-div" >
+                            <form onSubmit={this.handleSubmit}>
+                                <label>
+                                    Letter:
+                                </label>
+                                <input type="text" value={this.state.inputString} onChange={this.handleChange} />
+                                <input type="submit" value="Submit" />
+                            </form>
+                        </div>
+                        <div>
+                            <h1>Current score is {this.props.score.correct}/{this.props.score.total}</h1>
+                        </div>
+                        <Keyboard clickHandler={(event)=>this.handleChange(event)}/> 
+                    </div>)}
+                </div>):(<h1>Loading...</h1>)
+            } 
         </div>
 
     }
