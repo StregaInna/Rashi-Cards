@@ -1,7 +1,7 @@
 import React from 'react'
 import dataArray from '../store/data'
 import { connect } from 'react-redux';
-import { realKeyboard } from '../store/inputString'
+import { clearString, realKeyboard } from '../store/inputString'
 import { loadRashiScript, nextCard, reAddCard, shuffleDeck } from '../store/cardDeck';
 
 
@@ -31,12 +31,13 @@ class FlashCard extends React.Component {
         if(this.props.cardIndex < (this.props.cardDeck.length -1)){
             this.props.nextCard()
         }
+        this.props.clearString()
       }
 
     render(){
         // console.dir(this.state.currentCard)
         // console.dir(this.state.dataArray)
-        console.log(this.props.inputString)
+        console.log(`ths input string is ${this.props.inputString}`)
         return <div>
             {this.props.cardDeck?(
             <div id="flashcard-div">
@@ -75,6 +76,7 @@ const mapDispatch = (dispatch) => ({
     shuffle: () => dispatch(shuffleDeck()),
     nextCard: () => dispatch(nextCard()),
     reAddCard: () => dispatch(reAddCard()),
+    clearString: () => dispatch(clearString())
 
 })
 export default connect(mapState, mapDispatch)(FlashCard)

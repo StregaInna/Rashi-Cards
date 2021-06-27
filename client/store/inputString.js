@@ -4,6 +4,7 @@
 
 const ADD_LETTER = 'ADD_LETTER'
 const KEYBOARD_OVERRIDE = 'KEYBOARD_OVERRIDE'
+const CLEAR_STRING  = 'CLEAR_STRING'
 
 //ACTION CREATORS
 export const addLetter = (letter) => {
@@ -18,6 +19,12 @@ export const keyboardOverride = (string) => {
         string 
     }
 }
+export const clearString = () => {
+    return{
+        type: CLEAR_STRING
+    }
+}
+
 //THUNK CREATORS (none yet)
 export const virtualKeyboard = (letter) => {
     return (dispatch) => {
@@ -37,7 +44,9 @@ export default function inputStringReducer(inputString = '', action) {
     case KEYBOARD_OVERRIDE:
         return action.string
     case ADD_LETTER:
-        return inputString + action.letter  
+        return inputString + action.letter
+    case CLEAR_STRING:
+        return ''
     default:
       return inputString
   }
